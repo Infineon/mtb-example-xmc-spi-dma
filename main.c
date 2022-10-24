@@ -46,11 +46,14 @@
 /*******************************************************************************
  * Macros
  *******************************************************************************/
-/* SPI pin definitions */
+ 
+#if (UC_SERIES == XMC47)
+/* XMC 4700 and 4800 device */
 #define SPI_TX               P0_5
 #define SPI_RX               P0_4
 #define SPI_SS               P0_6
 #define SPI_SCLK             P0_11
+#endif
 
 /* Number of transfers after which we toggle CYBSP_USER_LED1 */
 #define TICKS_PER_TOGGLE     (1000u)
@@ -89,55 +92,55 @@ uint8_t recv_buffer[BUFFER_LENGTH];
 XMC_SPI_CH_CONFIG_t spi_config =
 {
     /* Baud rate configuration */
-    .baudrate = BAUD_RATE,     
-          
+    .baudrate = BAUD_RATE,
+
     /* Defines the SPI bus mode */
     .bus_mode = XMC_SPI_CH_BUS_MODE_MASTER,
 
     /* Defines the Polarity of the slave select signals SELO[7:0] */
-    .selo_inversion = XMC_SPI_CH_SLAVE_SEL_INV_TO_MSLS    
+    .selo_inversion = XMC_SPI_CH_SLAVE_SEL_INV_TO_MSLS
 };
 
 /* Configuration of DMA to receive data from MOSI */
 XMC_DMA_CH_CONFIG_t dma_ch_recv_config =
 {
     /* Source address */
-    .src_addr = (uint32_t) & (XMC_SPI1_CH0->OUTR), 
+    .src_addr = (uint32_t) & (XMC_SPI1_CH0->OUTR),
 
     /* Source transfer width (:: XMC_DMA_CH_TRANSFER_WIDTH_t) */
-    .src_transfer_width = XMC_DMA_CH_TRANSFER_WIDTH_8, 
+    .src_transfer_width = XMC_DMA_CH_TRANSFER_WIDTH_8,
 
     /* Destination transfer width (:: XMC_DMA_CH_TRANSFER_WIDTH_t) */
     .dst_transfer_width = XMC_DMA_CH_TRANSFER_WIDTH_8,
-        
-    /* Source address count mode (:: XMC_DMA_CH_ADDRESS_COUNT_MODE_t) */
-    .src_address_count_mode = XMC_DMA_CH_ADDRESS_COUNT_MODE_NO_CHANGE, 
 
-    /* Destination address count mode (:: XMC_DMA_CH_ADDRESS_COUNT_MODE_t) */  
+    /* Source address count mode (:: XMC_DMA_CH_ADDRESS_COUNT_MODE_t) */
+    .src_address_count_mode = XMC_DMA_CH_ADDRESS_COUNT_MODE_NO_CHANGE,
+
+    /* Destination address count mode (:: XMC_DMA_CH_ADDRESS_COUNT_MODE_t) */
     .dst_address_count_mode = XMC_DMA_CH_ADDRESS_COUNT_MODE_INCREMENT,
 
     /* Source burst length (:: XMC_DMA_CH_BURST_LENGTH_t) */
-    .src_burst_length = XMC_DMA_CH_BURST_LENGTH_1, 
-        
+    .src_burst_length = XMC_DMA_CH_BURST_LENGTH_1,
+
     /* Destination burst length (:: XMC_DMA_CH_BURST_LENGTH_t) */
-    .dst_burst_length = XMC_DMA_CH_BURST_LENGTH_1, 
+    .dst_burst_length = XMC_DMA_CH_BURST_LENGTH_1,
 
     /* DMA transfer flow (:: XMC_DMA_CH_TRANSFER_FLOW_t) */
     .transfer_flow = XMC_DMA_CH_TRANSFER_FLOW_P2M_DMA,
 
     /* DMA transfer type (:: XMC_DMA_CH_TRANSFER_TYPE_t) */
-    .transfer_type = XMC_DMA_CH_TRANSFER_TYPE_SINGLE_BLOCK, 
+    .transfer_type = XMC_DMA_CH_TRANSFER_TYPE_SINGLE_BLOCK,
 
     /* DMA destination handshaking interface (:: XMC_DMA_CH_DST_HANDSHAKING_t) */
-    .src_handshaking = XMC_DMA_CH_SRC_HANDSHAKING_HARDWARE,  
-        
+    .src_handshaking = XMC_DMA_CH_SRC_HANDSHAKING_HARDWARE,
+
     /* Destination peripheral request. See xmc_dma_map.h */
-    .src_peripheral_request = DMA0_PERIPHERAL_REQUEST_USIC1_SR1_2, 
+    .src_peripheral_request = DMA0_PERIPHERAL_REQUEST_USIC1_SR1_2,
 
     .enable_interrupt = true,
 
     /* DMA channel priority */
-    .priority = XMC_DMA_CH_PRIORITY_7 
+    .priority = XMC_DMA_CH_PRIORITY_7
 };
 
 /* Configuration of DMA to receive data from MISO */
@@ -147,47 +150,47 @@ XMC_DMA_CH_CONFIG_t dma_ch_send_config =
     .dst_addr = (uint32_t) & (XMC_SPI1_CH0->IN[0]),
 
     /* Source transfer width (:: XMC_DMA_CH_TRANSFER_WIDTH_t) */
-    .src_transfer_width = XMC_DMA_CH_TRANSFER_WIDTH_8,  
+    .src_transfer_width = XMC_DMA_CH_TRANSFER_WIDTH_8,
 
     /* Destination transfer width (:: XMC_DMA_CH_TRANSFER_WIDTH_t) */
-    .dst_transfer_width = XMC_DMA_CH_TRANSFER_WIDTH_8,   
+    .dst_transfer_width = XMC_DMA_CH_TRANSFER_WIDTH_8,
 
     /* Source address count mode (:: XMC_DMA_CH_ADDRESS_COUNT_MODE_t) */
     .src_address_count_mode = XMC_DMA_CH_ADDRESS_COUNT_MODE_INCREMENT,
 
     /* Destination address count mode (:: XMC_DMA_CH_ADDRESS_COUNT_MODE_t) */
-    .dst_address_count_mode = XMC_DMA_CH_ADDRESS_COUNT_MODE_NO_CHANGE, 
+    .dst_address_count_mode = XMC_DMA_CH_ADDRESS_COUNT_MODE_NO_CHANGE,
 
-    /* Source burst length (:: XMC_DMA_CH_BURST_LENGTH_t) */  
+    /* Source burst length (:: XMC_DMA_CH_BURST_LENGTH_t) */
     .src_burst_length = XMC_DMA_CH_BURST_LENGTH_8,
 
     /* Destination burst length (:: XMC_DMA_CH_BURST_LENGTH_t) */
      .dst_burst_length = XMC_DMA_CH_BURST_LENGTH_8,
 
     /* DMA transfer flow (:: XMC_DMA_CH_TRANSFER_FLOW_t) */
-    .transfer_flow = XMC_DMA_CH_TRANSFER_FLOW_M2P_DMA,  
+    .transfer_flow = XMC_DMA_CH_TRANSFER_FLOW_M2P_DMA,
 
     /* DMA transfer type (:: XMC_DMA_CH_TRANSFER_TYPE_t) */
     .transfer_type = XMC_DMA_CH_TRANSFER_TYPE_SINGLE_BLOCK,
 
     /* DMA destination handshaking interface (:: XMC_DMA_CH_DST_HANDSHAKING_t) */
-    .dst_handshaking = XMC_DMA_CH_DST_HANDSHAKING_HARDWARE,   
+    .dst_handshaking = XMC_DMA_CH_DST_HANDSHAKING_HARDWARE,
 
     /* Destination peripheral request. See xmc_dma_map.h */
-     .dst_peripheral_request = DMA0_PERIPHERAL_REQUEST_USIC1_SR0_0,       
+     .dst_peripheral_request = DMA0_PERIPHERAL_REQUEST_USIC1_SR0_0,
 };
 
 const XMC_GPIO_CONFIG_t gpio_config =
 {
     /* Defines the direction and characteristics of a pin */
-    .mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL, 
+    .mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL,
 
     /* Defines output level of a pin */
-    .output_level = XMC_GPIO_OUTPUT_LEVEL_LOW    
+    .output_level = XMC_GPIO_OUTPUT_LEVEL_LOW
 };
 
 /*******************************************************************************
- * Function Name: transfer_stream 
+ * Function Name: transfer_stream
  ********************************************************************************
  * Summary:
  * Transfers the data from software buffer to SPI buffer
@@ -196,15 +199,16 @@ const XMC_GPIO_CONFIG_t gpio_config =
  *  const uint8_t *const src - Pointer to the source buffer
  *  const uint8_t *const dst - Pointer to the destination buffer
  *  const uint32_t length    - Number of bytes of the data to be transmitted
- * 
+ *
  * Return:
  *  void
  *
  *******************************************************************************/
+
 void transfer_stream(const uint8_t *const src, const uint8_t *const dst, const uint32_t length)
 {
     /* Clear pending request for transmit DMA Channel */
-    XMC_DMA_CH_ClearDestinationPeripheralRequest(XMC_DMA0, 1);   
+    XMC_DMA_CH_ClearDestinationPeripheralRequest(XMC_DMA0, 1);
 
     /* Hardware trigger for DMA sending */
     XMC_USIC_CH_TriggerServiceRequest(XMC_SPI1_CH0, 0);
@@ -216,26 +220,26 @@ void transfer_stream(const uint8_t *const src, const uint8_t *const dst, const u
     XMC_DMA_CH_SetBlockSize(XMC_DMA0, 0, length);
 
     /* This function sets the block size of a transfer */
-    XMC_DMA_CH_SetBlockSize(XMC_DMA0, 1, length);      
+    XMC_DMA_CH_SetBlockSize(XMC_DMA0, 1, length);
 
     /* This function sets the destination address of the specified channel */
-    XMC_DMA_CH_SetDestinationAddress(XMC_DMA0, 0, (uint32_t)dst); 
+    XMC_DMA_CH_SetDestinationAddress(XMC_DMA0, 0, (uint32_t)dst);
 
     /* This function sets the source address of the specified channel */
-    XMC_DMA_CH_SetSourceAddress(XMC_DMA0, 1, (uint32_t)src);        
+    XMC_DMA_CH_SetSourceAddress(XMC_DMA0, 1, (uint32_t)src);
 
     /* Receive DMA Channel */
-    XMC_DMA_CH_Enable(XMC_DMA0, 0);   
+    XMC_DMA_CH_Enable(XMC_DMA0, 0);
 
     /* Transmit DMA Channel */
-    XMC_DMA_CH_Enable(XMC_DMA0, 1);                                           
+    XMC_DMA_CH_Enable(XMC_DMA0, 1);
 }
 
 /*******************************************************************************
  * Function Name: GPDMA0_0_IRQHandler
  ********************************************************************************
  * Summary:
- * This function checks if the transfer is completed successfully and then 
+ * This function checks if the transfer is completed successfully and then
  * initiates the next transfer.
  *
  * Parameters:
@@ -262,10 +266,10 @@ void GPDMA0_0_IRQHandler(void)
     if (memcmp(src_buffer, recv_buffer, BUFFER_LENGTH) != 0)
     {
         /* Transfer error. Halt the application */
-        XMC_GPIO_SetOutputHigh(CYBSP_USER_LED2_PORT, CYBSP_USER_LED2_PIN);
+        XMC_GPIO_SetOutputHigh(CYBSP_USER_LED1_PORT, CYBSP_USER_LED1_PIN);
         while (1);
     }
-    
+
     /* Transfer completed successfully. Toggle the LED */
     ticks++;
     if (ticks == TICKS_PER_TOGGLE)
@@ -274,7 +278,7 @@ void GPDMA0_0_IRQHandler(void)
         XMC_GPIO_ToggleOutput(CYBSP_USER_LED1_PORT, CYBSP_USER_LED1_PIN);
     }
 
-    /* Start next transfer */
+   /* Start next transfer */
     transfer_stream(&src_buffer[0], &recv_buffer[0], BUFFER_LENGTH);
 }
 
@@ -284,7 +288,7 @@ void GPDMA0_0_IRQHandler(void)
  * Summary:
  * This is the main function. It initializes the SPI interface and configures
  * DMA for streaming via SPI.
- * 
+ *
  * Parameters:
  *  void
  *
@@ -292,6 +296,7 @@ void GPDMA0_0_IRQHandler(void)
  *  int
  *
  *******************************************************************************/
+
 int main(void)
 {
     /* Fills the source buffer contents */
@@ -299,14 +304,20 @@ int main(void)
     {
         src_buffer[i] = i + 1;
     }
+    cy_rslt_t result;
+    result = cybsp_init();
+    if (result != CY_RSLT_SUCCESS)
+    {
+    CY_ASSERT(0);
+    }
 
-    /* Initializes input / output mode settings like, pull up / pull down devices,
-    push pull /open drain, and pad driver mode for LED1*/
+  /* Initializes input / output mode settings like, pull up / pull down devices,
+     push pull /open drain, and pad driver mode for LED1*/
     XMC_GPIO_Init(CYBSP_USER_LED1_PORT, CYBSP_USER_LED1_PIN, &gpio_config);
 
     /* Initializes input / output mode settings like, pull up / pull down devices,
-    push pull /open drain, and pad driver mode for LED2*/
-    XMC_GPIO_Init(CYBSP_USER_LED2_PORT, CYBSP_USER_LED2_PIN, &gpio_config);
+    push pull /open drain, and pad driver mode for LED2
+    XMC_GPIO_Init(CYBSP_USER_LED2_PORT, CYBSP_USER_LED2_PIN, &gpio_config);*/
 
     /* Initialize and enable the GPDMA peripheral */
     XMC_DMA_Init(XMC_DMA0);
@@ -327,7 +338,7 @@ int main(void)
     /* Initializes the selected SPI channel with the config structure */
     XMC_SPI_CH_Init(XMC_SPI1_CH0, &spi_config);
 
-    /* Sets digital input and output driver functionality and 
+    /* Sets digital input and output driver functionality and
     characteristics of a GPIO port pin */
     XMC_GPIO_SetMode(SPI_RX, XMC_GPIO_MODE_INPUT_TRISTATE);
 
@@ -352,10 +363,9 @@ int main(void)
     /* Enables the SPI protocol specific events */
     XMC_SPI_CH_EnableEvent(XMC_SPI1_CH0, XMC_SPI_CH_EVENT_STANDARD_RECEIVE | XMC_SPI_CH_EVENT_ALTERNATIVE_RECEIVE);
 
-    /* Sets an interrupt node for the receive FIFO events */
+   /* Sets an interrupt node for the receive FIFO events */
     XMC_USIC_CH_RXFIFO_SetInterruptNodePointer(XMC_SPI1_CH0, XMC_USIC_CH_RXFIFO_INTERRUPT_NODE_POINTER_STANDARD, 1);
-
-    /* Enables the interrupt events related to transmit FIFO */
+   /* Enables the interrupt events related to transmit FIFO */
     XMC_USIC_CH_RXFIFO_EnableEvent(XMC_SPI1_CH0, XMC_USIC_CH_RXFIFO_EVENT_STANDARD);
 
     /* Configures the receive FIFO */
@@ -367,15 +377,15 @@ int main(void)
     /* Set the selected USIC channel to operate in SPI mode */
     XMC_SPI_CH_Start(XMC_SPI1_CH0);
 
-    /* Sets digital input and output driver functionality and 
+    /* Sets digital input and output driver functionality and
     characteristics of a GPIO port pin */
     XMC_GPIO_SetMode(SPI_TX, (XMC_GPIO_MODE_t)((int32_t)XMC_GPIO_MODE_OUTPUT_PUSH_PULL | (int32_t)P0_5_AF_U1C0_DOUT0));
 
-    /* Sets digital input and output driver functionality and 
+    /* Sets digital input and output driver functionality and
     characteristics of a GPIO port pin */
     XMC_GPIO_SetMode(SPI_SS, (XMC_GPIO_MODE_t)((int32_t)XMC_GPIO_MODE_OUTPUT_PUSH_PULL | (int32_t)P0_6_AF_U1C0_SELO0));
 
-    /* Sets digital input and output driver functionality and 
+    /* Sets digital input and output driver functionality and
     characteristics of a GPIO port pin */
     XMC_GPIO_SetMode(SPI_SCLK, (XMC_GPIO_MODE_t)((int32_t)XMC_GPIO_MODE_OUTPUT_PUSH_PULL | (int32_t)P0_11_AF_U1C0_SCLKOUT));
 
