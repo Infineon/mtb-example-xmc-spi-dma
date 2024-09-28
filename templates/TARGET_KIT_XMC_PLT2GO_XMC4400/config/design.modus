@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration app="BACKEND" formatVersion="13" lastSavedWith="Configurator Backend" lastSavedWithVersion="3.0.0" toolsPackage="ModusToolbox 3.0.0" xmlns="http://cypress.com/xsd/cydesignfile_v4">
+<Configuration app="BACKEND" formatVersion="13" lastSavedWith="Configurator Backend" lastSavedWithVersion="3.10.0" toolsPackage="ModusToolbox 3.1.0" xmlns="http://cypress.com/xsd/cydesignfile_v4">
     <Devices>
         <Device mpn="XMC4400-F100x512">
             <BlockConfig>
@@ -470,56 +470,6 @@
                 </Block>
                 <Block location="usic[1].ch[0]">
                     <Alias value="CYBSP_DEBUG_UART"/>
-                    <Personality template="xmc_uart" version="1.0">
-                        <Param id="BaudRateGeneratorClockSrc" value="XMC_USIC_CH_BRG_CLOCK_SOURCE_DIVIDER"/>
-                        <Param id="ExternalClockEdge" value="XMC_USIC_CH_INPUT_COMBINATION_MODE_RISING_EDGE"/>
-                        <Param id="ClockDividerMode" value="XMC_USIC_CH_BRG_CLOCK_DIVIDER_MODE_FRACTIONAL"/>
-                        <Param id="configuration" value="auto"/>
-                        <Param id="Oversampling" value="16"/>
-                        <Param id="BaudRate" value="115200"/>
-                        <Param id="SamplePoint" value="8"/>
-                        <Param id="DataBits" value="8"/>
-                        <Param id="FrameLength" value="8"/>
-                        <Param id="StopBits" value="1"/>
-                        <Param id="ParityMode" value="XMC_USIC_CH_PARITY_MODE_NONE"/>
-                        <Param id="RxFIFOSize" value="XMC_USIC_CH_FIFO_DISABLED"/>
-                        <Param id="RxFIFOPointer" value="0"/>
-                        <Param id="TxFIFOSize" value="XMC_USIC_CH_FIFO_DISABLED"/>
-                        <Param id="TxFIFOPointer" value="0"/>
-                        <Param id="HwTransferGatingEnabled" value="false"/>
-                        <Param id="HwTransferGatingLogic" value="XMC_USIC_CH_START_TRANSMISION_ON_TDV_DX2S_0"/>
-                        <Param id="HwTransferTriggerEnabled" value="false"/>
-                        <Param id="HwTransferTriggerEdge" value="XMC_USIC_CH_INPUT_COMBINATION_MODE_RISING_EDGE"/>
-                        <Param id="DataCollisionEnabled" value="false"/>
-                        <Param id="TimeMeasurementEnabled" value="false"/>
-                        <Param id="TransmitBufferInterrupt" value="false"/>
-                        <Param id="ReceiverStartInterrupt" value="false"/>
-                        <Param id="TransmitBufferInterruptSRSel" value="0"/>
-                        <Param id="TransmitShiftInterrupt" value="false"/>
-                        <Param id="TransmitShiftInterruptSRSel" value="0"/>
-                        <Param id="ReceiverInterrupt" value="true"/>
-                        <Param id="ReceiverInterruptSRSel" value="0"/>
-                        <Param id="AlternativeInterrupt" value="false"/>
-                        <Param id="AlternativeInterruptSRSel" value="0"/>
-                        <Param id="DataLostInterrupt" value="false"/>
-                        <Param id="CollisionDetectionEvent" value="false"/>
-                        <Param id="TransmitterFrameFinishedEvent" value="false"/>
-                        <Param id="ReceiverFrameFinishedEvent" value="false"/>
-                        <Param id="SynchronizationBreakDetectionEvent" value="false"/>
-                        <Param id="ReceiverNoiseDetectionEvent" value="false"/>
-                        <Param id="FormatErrorEvent" value="false"/>
-                        <Param id="ProtocolEventSRSel" value="0"/>
-                        <Param id="StandardTransmitBufferEvent" value="false"/>
-                        <Param id="StandardTransmitBufferEventSRSel" value="0"/>
-                        <Param id="TransmitBufferErrorEvent" value="false"/>
-                        <Param id="TransmitBufferErrorEventSRSel" value="0"/>
-                        <Param id="StandardReceiveBufferEvent" value="false"/>
-                        <Param id="StandardReceiveBufferEventSRSel" value="0"/>
-                        <Param id="ReceiveBufferErrorEvent" value="false"/>
-                        <Param id="ReceiveBufferErrorEventSRSel" value="0"/>
-                        <Param id="ShowSystemRelatedOutputs" value="false"/>
-                        <Param id="inFlash" value="true"/>
-                    </Personality>
                 </Block>
                 <Block location="usic[1].ch[1]">
                     <Alias value="SPI_CH"/>
@@ -544,7 +494,6 @@
                         <Param id="ClockDividerMode" value="XMC_USIC_CH_BRG_CLOCK_DIVIDER_MODE_NORMAL"/>
                         <Param id="configuration" value="manual"/>
                         <Param id="BusSpeed" value="19.2"/>
-                        <Param id="Oversampling" value="2"/>
                         <Param id="ClockDividerStep" value="1023"/>
                         <Param id="PDiv" value="4"/>
                         <Param id="SelectControl" value="Direct"/>
@@ -590,6 +539,8 @@
                         <Param id="HwTransferTriggerEdge" value="XMC_USIC_CH_INPUT_COMBINATION_MODE_RISING_EDGE"/>
                         <Param id="TimeMeasurementEnabled" value="false"/>
                         <Param id="ShowSystemRelatedOutputs" value="true"/>
+                        <Param id="StartAfterInit" value="true"/>
+                        <Param id="inFlash" value="true"/>
                     </Personality>
                 </Block>
             </BlockConfig>
@@ -607,20 +558,12 @@
                     <Port name="usic[1].ch[1].dx0[0]"/>
                 </Net>
                 <Net>
-                    <Port name="ioss[0].port[0].pin[5].digital_in[0]"/>
-                    <Port name="usic[1].ch[0].dx0[0]"/>
-                </Net>
-                <Net>
                     <Port name="ioss[0].port[0].pin[12].digital_out[0]"/>
                     <Port name="usic[1].ch[1].selo0[0]"/>
                 </Net>
                 <Net>
                     <Port name="ioss[0].port[1].pin[8].digital_out[0]"/>
                     <Port name="usic[1].ch[1].sclkout[0]"/>
-                </Net>
-                <Net>
-                    <Port name="ioss[0].port[1].pin[15].digital_out[0]"/>
-                    <Port name="usic[1].ch[0].dout0[0]"/>
                 </Net>
                 <Mux name="dout0" location="usic[1].ch[1]">
                     <Arm>

@@ -8,7 +8,7 @@
  *
  *******************************************************************************
  *
- * Copyright (c) 2022, Infineon Technologies AG
+ * Copyright (c) 2022-2024, Infineon Technologies AG
  * All rights reserved.
  *
  * Boost Software License - Version 1.0 - August 17th, 2003
@@ -56,6 +56,7 @@
 #define PRIORITY                    (63)
 
 /* Define macro to enable/disable printing of debug messages */
+/* Debug print can be enabled for all supported BSPs except KIT_XMC_PLT2GO_XMC4400 BSP.*/
 #define ENABLE_XMC_DEBUG_PRINT      (0)
 
 /*******************************************************************************
@@ -211,10 +212,9 @@ int main(void)
     CY_ASSERT(0);
     }
 
-    /* Initialize printf retarget */
-    cy_retarget_io_init(CYBSP_DEBUG_UART_HW);
-
     #if ENABLE_XMC_DEBUG_PRINT
+        /* Initialize printf retarget */
+        cy_retarget_io_init(CYBSP_DEBUG_UART_HW);
         printf("Initialization done\r\n");
     #endif
 
